@@ -10,6 +10,7 @@ const initWebRoutes = (app) => {
   //path, URL
   router.get("/", homeController.handelHomePage);
   router.get("/user", homeController.handelUserPage);
+  router.post("/users/create-user", homeController.handelCreateNewUSer);
   return app.use("/", router);
 };
 
