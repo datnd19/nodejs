@@ -1,11 +1,4 @@
-import mysql from "mysql2";
-// create the connection to database
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  database: "nodejs",
-});
-
+import userServices from "../service/userServices";
 const handelHomePage = (req, res) => {
   return res.render("home.ejs");
 };
@@ -19,16 +12,8 @@ const handelCreateNewUSer = (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
   let username = req.body.username;
-  // simple query
-  connection.query(
-    "INSERT INTO users (email, password, username) VALUES (?, ?, ?)",
-    [email, password, username],
-    function (err, results, fields) {
-      if (err) {
-        console.log(err);
-      }
-    }
-  );
+  //userServices.createNewUser(email, password, username);
+  userServices.getListUser();
   return res.send("user.ejs");
 };
 
