@@ -14,12 +14,17 @@ const handelCreateNewUSer = (req, res) => {
   let password = req.body.password;
   let username = req.body.username;
   userServices.createNewUser(email, password, username);
+  return res.redirect("/user");
+};
 
-  return res.send("user.ejs");
+const handelDeleteUser = async (req, res) => {
+  await userServices.deleteUser(req.params.id);
+  return res.redirect("/user");
 };
 
 module.exports = {
   handelHomePage,
   handelUserPage,
   handelCreateNewUSer,
+  handelDeleteUser,
 };

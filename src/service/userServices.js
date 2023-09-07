@@ -9,17 +9,17 @@ const hashPassword = (password) => {
   return hashPass;
 };
 
-const createNewUser = (email, password, username) => {
+const createNewUser = async (email, password, username) => {
   let hashPass = hashPassword(password);
-  // simple query
-  connection.query(
+  const connection = await mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    database: "nodejs",
+    Promise: bluebird,
+  });
+  const [rows, fields] = await connection.execute(
     "INSERT INTO users (email, password, username) VALUES (?, ?, ?)",
-    [email, hashPass, username],
-    function (err, results, fields) {
-      if (err) {
-        console.log(err);
-      }
-    }
+    [email, hashPass, username]
   );
 };
 
@@ -31,20 +31,26 @@ const getListUser = async () => {
     database: "nodejs",
     Promise: bluebird,
   });
-  //   connection.query("SELECT * FROM users", function (err, results, fields) {
-  //     if (err) {
-  //       console.log(err);
-  //       return users;
-  //     }
-  //     users = results;
-  //     return users;
-  //   });
-  // query database
   const [rows, fields] = await connection.execute("SELECT * FROM users");
   return rows;
+};
+
+const deleteUser = async (id) => {
+  // create the connection, specify bluebird as Promise
+  const connection = await mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    database: "nodejs",
+    Promise: bluebird,
+  });
+  const [rows, fields] = await connection.execute(
+    "DELETE FROM users WHERE id=?",
+    [id]
+  );
 };
 
 module.exports = {
   createNewUser,
   getListUser,
+  deleteUser,
 };
