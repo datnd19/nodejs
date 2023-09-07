@@ -13,27 +13,61 @@
 </head>
 
 <body>
-    <div class="user-infor-container">
-        <form method="post" action="/users/create-user">
-            <div class="container">
-                <div class="mb3 mt-3">
-                    <h2>Create New User</h2>
-                </div>
-                <div class="mb-3 col-6">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <div class="mb-3 col-6">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-                <div class="mb-3 col-6">
-                    <label for="username" class="form-label">Username: </label>
-                    <input type="text" class="form-control" id="username" name="username" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="container">
+        <div class="row">
+            <div class="user-infor-container">
+                <form method="post" action="/users/create-user">
+                    <div class="mb3 mt-3">
+                        <h2>Create New User</h2>
+                    </div>
+                    <div class="mb-3 col-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3 col-6">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3 col-6">
+                        <label for="username" class="form-label">Username: </label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
-        </form>
+            <div class="table-users mt-5">
+                <h3>Table User</h3>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% userList.forEach(function(item,index){ %>
+                            <tr>
+                                <th scope="row">
+                                    <%= index + 1%>
+                                </th>
+                                <td>
+                                    <%= item.email%>
+                                </td>
+                                <td>
+                                    <%= item.username%>
+                                </td>
+                                <td>
+                                    <button class="btn btn-warning">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </body>
 
