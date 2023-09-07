@@ -49,8 +49,39 @@ const deleteUser = async (id) => {
   );
 };
 
+const getUserEdit = async (id) => {
+  // create the connection, specify bluebird as Promise
+  const connection = await mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    database: "nodejs",
+    Promise: bluebird,
+  });
+  const [rows, fields] = await connection.execute(
+    "Select * from users WHERE id=?",
+    [id]
+  );
+  return rows;
+};
+
+const handelUpdateUserInfo = async (email, username, id) => {
+  const connection = await mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    database: "nodejs",
+    Promise: bluebird,
+  });
+  const [rows, fields] = await connection.execute(
+    "UPDATE users SET email = ? , username = ?  WHERE id  = ?",
+    [email, username, id]
+  );
+  return rows;
+};
+
 module.exports = {
   createNewUser,
   getListUser,
   deleteUser,
+  getUserEdit,
+  handelUpdateUserInfo,
 };

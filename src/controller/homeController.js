@@ -22,9 +22,30 @@ const handelDeleteUser = async (req, res) => {
   return res.redirect("/user");
 };
 
+const handelGetUserEdit = async (req, res) => {
+  let id = req.params.id;
+  let userData = {};
+  let user = await userServices.getUserEdit(id);
+  if (user && user.length > 0) {
+    userData = user[0];
+  }
+  return res.render("userUpdate.ejs", { userData });
+};
+
+const handelUpdateUser = async (req, res) => {
+  let email = req.body.email;
+  let username = req.body.username;
+  let id = req.body.id;
+  console.log(email, username, id);
+  await userServices.handelUpdateUserInfo(email, username, id);
+  return res.redirect("/user");
+};
+
 module.exports = {
   handelHomePage,
   handelUserPage,
   handelCreateNewUSer,
   handelDeleteUser,
+  handelGetUserEdit,
+  handelUpdateUser,
 };
