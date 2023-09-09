@@ -22,57 +22,81 @@ const createNewUser = async (email, password, username) => {
 
 const getListUser = async () => {
   // create the connection, specify bluebird as Promise
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "nodejs",
-    Promise: bluebird,
-  });
-  const [rows, fields] = await connection.execute("SELECT * FROM users");
-  return rows;
+  // const connection = await mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   database: "nodejs",
+  //   Promise: bluebird,
+  // });
+  // const [rows, fields] = await connection.execute("SELECT * FROM users");
+  // return rows;
+
+  let users = [];
+  users = await db.User.findAll();
+  return users;
 };
 
-const deleteUser = async (id) => {
+const deleteUser = async (userId) => {
   // create the connection, specify bluebird as Promise
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "nodejs",
-    Promise: bluebird,
+  // const connection = await mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   database: "nodejs",
+  //   Promise: bluebird,
+  // });
+  // const [rows, fields] = await connection.execute(
+  //   "DELETE FROM users WHERE id=?",
+  //   [id]
+  // );
+  await db.User.destroy({
+    where: {
+      id: userId,
+    },
   });
-  const [rows, fields] = await connection.execute(
-    "DELETE FROM users WHERE id=?",
-    [id]
-  );
 };
 
-const getUserEdit = async (id) => {
+const getUserEdit = async (userId) => {
   // create the connection, specify bluebird as Promise
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "nodejs",
-    Promise: bluebird,
+  // const connection = await mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   database: "nodejs",
+  //   Promise: bluebird,
+  // });
+  // const [rows, fields] = await connection.execute(
+  //   "Select * from users WHERE id=?",
+  //   [id]
+  // );
+  // return rows;
+  let user = {};
+  user = await db.User.findOne({
+    where: {
+      id: userId,
+    },
   });
-  const [rows, fields] = await connection.execute(
-    "Select * from users WHERE id=?",
-    [id]
-  );
-  return rows;
+  return user.get({ plain: true });
 };
 
 const handelUpdateUserInfo = async (email, username, id) => {
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "nodejs",
-    Promise: bluebird,
-  });
-  const [rows, fields] = await connection.execute(
-    "UPDATE users SET email = ? , username = ?  WHERE id  = ?",
-    [email, username, id]
+  // const connection = await mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   database: "nodejs",
+  //   Promise: bluebird,
+  // });
+  // const [rows, fields] = await connection.execute(
+  //   "UPDATE users SET email = ? , username = ?  WHERE id  = ?",
+  //   [email, username, id]
+  // );
+  // return rows;
+  await db.User.update(
+    { email: email, username: username },
+    {
+      where: {
+        id: id,
+      },
+    }
   );
-  return rows;
 };
 
 module.exports = {

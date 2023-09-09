@@ -26,9 +26,7 @@ const handelGetUserEdit = async (req, res) => {
   let id = req.params.id;
   let userData = {};
   let user = await userServices.getUserEdit(id);
-  if (user && user.length > 0) {
-    userData = user[0];
-  }
+  userData = user;
   return res.render("userUpdate.ejs", { userData });
 };
 
