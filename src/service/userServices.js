@@ -30,6 +30,27 @@ const getListUser = async () => {
   // });
   // const [rows, fields] = await connection.execute("SELECT * FROM users");
   // return rows;
+  // test relationships
+  let newUser = await db.User.findOne({
+    where: { id: 1 },
+    include: { model: db.Group, attributes: ["name", "description"] },
+    attributes: ["id", "username", "email"],
+    raw: true,
+    nest: true,
+  });
+  console.log(newUser);
+
+  // let roles = await db.Group.findAll({
+  //   where: { id: 1 },
+  //   include: { model: db.Role },
+  //   raw: true,
+  //   nest: true,
+  // });
+  // let roles = await db.Role.findAll({
+  //   include: { model: db.Group, where: { id: 1 } },
+  //   raw: true,
+  //   nest: true,
+  // });
 
   let users = [];
   users = await db.User.findAll();
