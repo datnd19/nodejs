@@ -4,7 +4,10 @@ const testApi = (req, res) => {
     data: "test api",
   });
 };
-
+const handelRegister = (req, res) => {
+  console.log(req.body);
+};
 module.exports = {
   testApi,
+  handelRegister,
 };
