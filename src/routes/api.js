@@ -12,6 +12,7 @@ const initApiRoutes = (app) => {
   // POST , GET, DELETE, UPDATE
   router.get("/test-api", apiController.testApi);
   router.post("/register", apiController.handelRegister);
+  
   return app.use("/api/v1", router);
 };
 
