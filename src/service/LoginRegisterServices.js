@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import db from "../models";
-
+import { json } from "body-parser";
+import { Op } from "sequelize";
 const checkEmailExist = async (userEmail) => {
   let isExist = await db.User.findOne({
     where: { email: userEmail },
@@ -63,6 +64,48 @@ const registerUser = async (rawUser) => {
   }
 };
 
+const checkPassword = (inputPassword, hashPass) => {
+  return bcrypt.compareSync(inputPassword, hashPass); //true or false
+};
+
+const loginUser = async (rawUser) => {
+  try {
+    let user = await db.User.findOne({
+      where: {
+        [Op.or]: [{ email: rawUser.account }, { phone: rawUser.account }],
+      },
+    });
+    if (user) {
+      let checkPass = checkPassword(rawUser.password, user.password);
+      if (checkPass) {
+        return {
+          EM: "Login Successfully",
+          EC: 0,
+          DT: "",
+        };
+      } else {
+        return {
+          EM: "Email or phone or password not is incorrect",
+          EC: 1,
+          DT: "",
+        };
+      }
+    } else {
+      return {
+        EM: "Email or phone or password not is incorrect",
+        EC: 1,
+        DT: "",
+      };
+    }
+  } catch (error) {
+    return {
+      EM: "Some thing wrong",
+      EC: -2,
+    };
+  }
+};
+
 module.exports = {
   registerUser,
+  loginUser,
 };
