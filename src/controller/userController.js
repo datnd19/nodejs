@@ -1,14 +1,28 @@
 import userApi from "../service/userApi";
 const readApi = async (req, res) => {
   try {
-    let data = await userApi.readUser();
-    //services: create user
-    if (data) {
-      return res.status(200).json({
-        EM: data.EM,
-        EC: data.EC,
-        DT: data.DT,
-      });
+    if (req.query.page && req.query.limit) {
+      let page = req.query.page;
+      let limit = req.query.limit;
+      let data = await userApi.readUserWithPaginate(+page, +limit);
+      //services: create user
+      if (data) {
+        return res.status(200).json({
+          EM: data.EM,
+          EC: data.EC,
+          DT: data.DT,
+        });
+      }
+    } else {
+      let data = await userApi.readUser();
+      //services: create user
+      if (data) {
+        return res.status(200).json({
+          EM: data.EM,
+          EC: data.EC,
+          DT: data.DT,
+        });
+      }
     }
   } catch (error) {
     return res.status(500).json({
@@ -41,12 +55,18 @@ const updateApi = (req, res) => {
   }
 };
 
-const deleteApi = (req, res) => {
+const deleteApi = async (req, res) => {
   try {
+    let data = await userApi.deleteUser(req.body.id);
+    return res.status(200).json({
+      EM: data.EM,
+      EC: data.EC,
+      DT: data.DT,
+    });
   } catch (error) {
     return res.status(500).json({
       EM: "error from server",
-      EC: -1,
+      EC: -3,
       DT: "",
     });
   }
