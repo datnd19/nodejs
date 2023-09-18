@@ -33,8 +33,17 @@ const readApi = async (req, res) => {
   }
 };
 
-const createApi = (req, res) => {
+const createApi = async (req, res) => {
   try {
+    let data = await userApi.createUser(req.body);
+    //services: create user
+    if (data) {
+      return res.status(200).json({
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT,
+      });
+    }
   } catch (error) {
     return res.status(500).json({
       EM: "error from server",

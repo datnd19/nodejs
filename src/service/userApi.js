@@ -60,6 +60,12 @@ const readUserWithPaginate = async (page, limit) => {
 const createUser = async (data) => {
   try {
     //user.
+    await db.User.create(data);
+    return {
+      EM: "oke",
+      EC: 0,
+      DT: data,
+    };
   } catch (error) {
     return {
       EM: "Error from server",
