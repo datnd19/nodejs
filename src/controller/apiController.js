@@ -59,6 +59,10 @@ const handelLogin = async (req, res) => {
       });
     }
     let data = await LoginRegisterServices.loginUser(req.body);
+    res.cookie("jwt", data.DT.access_token, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000,
+    });
     //services: create user
     return res.status(200).json({
       EM: data.EM,
