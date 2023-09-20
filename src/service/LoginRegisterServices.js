@@ -2,6 +2,9 @@ import bcrypt from "bcryptjs";
 import db from "../models";
 import { json } from "body-parser";
 import { Op } from "sequelize";
+import { getGroupWithRole } from "./JWTServices";
+import { createJWT } from "../middleware/JWTAction";
+require("dotenv").config();
 const checkEmailExist = async (userEmail) => {
   let isExist = await db.User.findOne({
     where: { email: userEmail },
@@ -51,6 +54,7 @@ const registerUser = async (rawUser) => {
       username: rawUser.username,
       password: bumPass,
       phone: rawUser.phone,
+      groupId: 4,
     });
     return {
       EM: "Created successfully",
@@ -77,11 +81,21 @@ const loginUser = async (rawUser) => {
     });
     if (user) {
       let checkPass = checkPassword(rawUser.password, user.password);
+      let groupWithRoles = await getGroupWithRole(user);
+      let payLoad = {
+        email: user.email,
+        groupWithRoles,
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      };
+      let token = createJWT(payLoad);
       if (checkPass) {
         return {
           EM: "Login Successfully",
           EC: 0,
-          DT: "",
+          DT: {
+            access_token: token,
+            groupWithRoles,
+          },
         };
       } else {
         return {

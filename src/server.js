@@ -8,7 +8,7 @@ import initApiRoutes from "./routes/api";
 import configCors from "./config/cors";
 const app = express();
 const PORT = process.env.PORT || 8080;
-import { createJWT, verifyToken } from "./middleware/JWTAction";
+
 //config CORS
 configCors(app);
 
@@ -20,12 +20,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //connectDB
 connection();
 
-//test JWT
-createJWT();
-let data = verifyToken(
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZGF0IiwiYWdlIjoyMCwiaWF0IjoxNjk1MTczMTA0fQ.L4vrIYLx3mXOEBVTHsGsbLmAJOiZl3J7Uba-yj4IP4s"
-);
-console.log(data);
 //init web routes
 initWebRoutes(app);
 initApiRoutes(app);
