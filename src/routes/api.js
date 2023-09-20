@@ -13,15 +13,10 @@ const initApiRoutes = (app) => {
   //path, URL
   // REST API
   // POST , GET, DELETE, UPDATE
+  router.all("*", checkUserJWT, checkUserPermission);
   router.post("/register", apiController.handelRegister);
   router.post("/login", apiController.handelLogin);
-
-  router.get(
-    "/user/read",
-    checkUserJWT,
-    checkUserPermission,
-    userController.readApi
-  );
+  router.get("/user/read", userController.readApi);
   router.post("/user/create", userController.createApi);
   router.put("/user/update", userController.updateApi);
   router.delete("/user/delete", userController.deleteApi);
